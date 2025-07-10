@@ -1,0 +1,13 @@
+services:
+  ether-testnet-execution:
+    image: ethereum/client-go:v1.15.11
+    command: --sepolia --syncmode=snap --http --http.addr=ether-testnet-execution --http.vhosts=* --authrpc.addr=ether-testnet-execution --authrpc.vhosts=* --authrpc.jwtsecret=/secret.hex
+    volumes:
+      - /crypto/ether-testnet/execution-data/:/root/.ethereum/
+      - ./ether-testnet/secret.hex:/secret.hex
+  ether-testnet-consensus:
+    image: gcr.io/offchainlabs/prysm/beacon-chain:stable
+    command: --sepolia --checkpoint-sync-url=https://checkpoint-sync.sepolia.ethpandaops.io --genesis-beacon-api-url=https://checkpoint-sync.sepolia.ethpandaops.io --min-sync-peers=5 --accept-terms-of-use --datadir=/data/ --execution-endpoint=http://ether-testnet-execution:8551 --jwt-secret=/secret.hex
+    volumes:
+      - /crypto/ether-testnet/consensus-data/:/data/
+      - ./ether-testnet/secret.hex:/secret.hex
