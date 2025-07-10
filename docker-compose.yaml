@@ -2,6 +2,10 @@ services:
   ether-testnet-execution:
     image: ethereum/client-go:v1.15.11
     command: --sepolia --syncmode=snap --http --http.addr=ether-testnet-execution --http.vhosts=* --authrpc.addr=ether-testnet-execution --authrpc.vhosts=* --authrpc.jwtsecret=/secret.hex
+    ports:
+      - "8545:8545"
+      - "8551:8551"
+      - "30303:30303"
     volumes:
       - ./ether-testnet/execution-data/:/root/.ethereum/
       - ./ether-testnet/secret.hex:/secret.hex
